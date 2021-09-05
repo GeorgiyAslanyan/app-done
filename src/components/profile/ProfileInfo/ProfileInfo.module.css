@@ -1,0 +1,22 @@
+.profileInfo {
+    min-height: 200px;
+    display: grid;
+    grid-template-columns: 10fr 3fr;
+    background-color: lightgray;
+    border-radius: 10px;
+    margin-left: 10px;
+    padding: 10px;
+}
+
+.aboutMe {
+    margin: 10px;
+}
+
+.ava {
+    text-align: center;
+}
+
+.ava img{
+    max-width: 200px;
+    border-radius: 10px;
+}

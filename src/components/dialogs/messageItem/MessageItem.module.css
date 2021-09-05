@@ -1,0 +1,13 @@
+.addedMessage {
+    display: flex;
+}
+
+.addedMessage span {
+    margin: 5px;
+    padding: 10px;
+    color: white;
+    background-color: #0099ff;
+    font-size: 18px;
+    border-radius: 5px;
+    margin-left: auto;
+}

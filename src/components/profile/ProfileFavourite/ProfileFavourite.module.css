@@ -1,0 +1,7 @@
+.favourite {
+    margin: 10px 0;
+    border-left: 2px solid lightgray;
+    padding: 10px;
+    background-color: lightgray;
+    border-radius: 10px;
+}

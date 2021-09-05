@@ -1,0 +1,17 @@
+.postArea {
+    padding-top: 5px;
+    display: flex;
+}
+
+.formControl {
+    flex: 1;
+}
+
+.formTextarea {
+    display: flex;
+}
+
+.formTextarea textarea{
+    margin-right: 10px;
+    margin-left: auto;
+}

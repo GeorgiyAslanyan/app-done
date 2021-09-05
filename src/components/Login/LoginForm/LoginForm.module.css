@@ -1,0 +1,19 @@
+.loginForm input{
+    margin: 5px;
+    padding: 5px;
+}
+
+.loginForm button{
+    margin: 5px;
+    padding: 5px;
+    background-color: #0099ff;
+    color: white;
+    font-weight: 600;
+    font-size: 17px;
+    border-color: #0099ff;
+    width: 22%;
+}
+
+.formError {
+    color: red;
+}

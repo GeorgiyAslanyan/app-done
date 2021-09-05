@@ -1,0 +1,33 @@
+.dialogs {
+    display: grid;
+    grid-template-columns: 3fr 10fr;
+}
+
+.dialogsItem {
+    padding: 10px;
+}
+
+.messages {
+    padding: 10px;
+    border-left: lightgray 2px solid;
+}
+
+.message {
+    text-align: end;
+    border: lightgray 2px solid;
+}
+
+.messagesArea {
+    margin-top: 10px;
+    display: flex;
+}
+
+.messagesArea textarea{
+    flex: 1;
+    margin-right: 10px;
+    margin-left: auto;
+}
+
+.messagesArea button{
+    margin-right: 5px;
+}

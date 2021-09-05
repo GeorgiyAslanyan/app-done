@@ -1,0 +1,17 @@
+.app {
+    max-width: 1200px;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.content {
+    display: flex;
+    width: 1200px;
+}
+
+.contentSide {
+    padding: 20px;
+    background-color: white;
+    margin-left: 20px;
+    flex: 1;
+}

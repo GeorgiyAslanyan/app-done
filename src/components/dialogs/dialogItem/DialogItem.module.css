@@ -1,0 +1,24 @@
+.dialogItem {
+
+}
+
+.dialogItem a{
+    font-size: 20px;
+    padding: 5px;
+    display: block;
+    text-decoration: none;
+    color: black;
+    transition: color .2s, background-color .2s, font-weight .2s;
+}
+
+.dialogItem a:hover{
+    color: white;
+    background-color: #0099ff;
+    font-weight: 700;
+}
+
+a.active {
+    color: white;
+    background-color: #0099ff;
+    font-weight: 700;
+}

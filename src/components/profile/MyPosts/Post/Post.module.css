@@ -1,0 +1,28 @@
+.post {
+    color: black;
+    margin: 10px;
+    padding: 10px;
+    background-color: lightgray;
+    border-radius: 10px;
+}
+
+.post h3{
+    margin: 5px 0;
+    font-weight: 400;
+}
+
+.postReaction {
+    text-align: right;
+}
+
+.postReaction button{
+    border-radius: 5px;
+    border-color: #0099ff;
+    padding: 5px;
+    margin: 5px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 700;
+    color: white;
+    background-color: #0099ff;
+}
