@@ -1,22 +1,26 @@
 import {profileAPI, UsersAPI} from "../api/api";
+import {ProfileType, PostsType, PhotosType} from "../types/types";
 
 const ADD_POST = 'samurai-network/profile/ADD-POST'
 const SET_USER_PROFILE = 'samurai-network/profile/SET-USER-PROFILE'
 const SET_STATUS = 'samurai-network/profile/SET-STATUS'
 const SAVE_PHOTO_SUCCESS = 'samurai-network/profile/SAVE-PHOTO-SUCCESS'
 
+
 let initialState = {
-    profile: null,
+    profile: null as ProfileType | null,
     posts: [
         {id: 1, message: 'Hello', likesCount: 3, repCount: 2, commentsCount: 4},
         {id: 2, message: 'Hi', likesCount: 2, repCount: 1, commentsCount: 2},
         {id: 3, message: 'Third post', likesCount: 4, repCount: 2, commentsCount: 4},
-    ],
-    newPostText: '',
-    status: ''
+    ] as Array<PostsType>,
+    newPostText: '' as string,
+    status: '' as string,
 }
 
-const profileReducer = (state = initialState, action) => {
+export type InitialStateType = typeof  initialState
+
+const profileReducer = (state = initialState, action: any): InitialStateType => {
     switch (action.type) {
         case ADD_POST:
             let newPost = {
@@ -43,38 +47,55 @@ const profileReducer = (state = initialState, action) => {
         case SAVE_PHOTO_SUCCESS:
             return {
                 ...state,
-                profile: {...state.profile, photos: action.photos}
+                profile: {...state.profile, photos: action.photos} as ProfileType
             }
         default:
             return state
     }
 }
 
-export const addPostActionCreator = (newPostText) => ({type: ADD_POST, newPostText})
-export const setUserProfileSuccess = (profile) => ({type: SET_USER_PROFILE, profile})
-export const setStatus = (status) => ({type: SET_STATUS, status})
-export const savePhotoSuccess = (photos) => ({type: SAVE_PHOTO_SUCCESS, photos})
+type AddPostCreatorActionType = {
+    type: typeof ADD_POST,
+    newPostText: string
+}
+type SetUserProfileSuccessActionType = {
+    type: typeof SET_USER_PROFILE,
+    profile: ProfileType
+}
+type SetStatusActionType = {
+    type: typeof SET_STATUS,
+    status: string
+}
+type SavePhotoSuccessActionType = {
+    type: typeof SAVE_PHOTO_SUCCESS,
+    photos: PhotosType
+}
 
-export const setUserProfile = (userId) => async (dispatch) => {
+export const addPostActionCreator = (newPostText: string): AddPostCreatorActionType => ({type: ADD_POST, newPostText})
+export const setUserProfileSuccess = (profile: ProfileType): SetUserProfileSuccessActionType => ({type: SET_USER_PROFILE, profile})
+export const setStatus = (status: string): SetStatusActionType => ({type: SET_STATUS, status})
+export const savePhotoSuccess = (photos: PhotosType): SavePhotoSuccessActionType => ({type: SAVE_PHOTO_SUCCESS, photos})
+
+export const setUserProfile = (userId: number) => async (dispatch: any) => {
     let data = await UsersAPI.getProfile(userId)
     dispatch(setUserProfileSuccess(data))
 }
 
-export const getStatus = (userId) => async (dispatch) => {
+export const getStatus = (userId: number) => async (dispatch: any) => {
     let data = await profileAPI.getStatus(userId)
     dispatch(setStatus(data))
 }
 
-export const updateStatus = (status) => async (dispatch) => {
+export const updateStatus = (status: string) => async (dispatch: any) => {
     let data = await profileAPI.updateStatus(status)
     if (data.resultCode === 0) {
         dispatch(setStatus(status))
     }
 }
 
-export const savePhoto = (file) => async (dispatch) => {
+export const savePhoto = (file: any) => async (dispatch: any) => {
     let data = await profileAPI.savePhoto(file)
-    if (data.resultCode === 0) {
+    if (data.data.resultCode === 0) {
         dispatch(savePhotoSuccess(data.data.photos))
     }
 }

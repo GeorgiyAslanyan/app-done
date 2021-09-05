@@ -1,18 +1,20 @@
 import {authAPI} from "../api/api";
-import {stopSubmit} from "redux-form";
+import { stopSubmit } from "redux-form";
 
 const SET_USER_DATA = 'samurai-network/auth/SET-USER-DATA'
 const SET_MAIN_PHOTO = 'samurai-network/auth/SET-MAIN_PHOTO'
 
 let initialState = {
-    userId: null,
-    email: null,
-    login: null,
-    isAuth: false,
-    mainPhoto: ''
+    userId: null as number | null,
+    email: null as string | null,
+    login: null as string | null,
+    isAuth: false as boolean,
+    mainPhoto: '' as string | null
 }
 
-const authReducer = (state = initialState, action) => {
+export type InitialStateType = typeof initialState
+
+const authReducer = (state = initialState, action: any): InitialStateType => {
     switch (action.type) {
         case SET_USER_DATA:
             return {
@@ -29,13 +31,30 @@ const authReducer = (state = initialState, action) => {
     }
 }
 
-export const setUserDataSuccess = (userId, login, email, isAuth) => ({
+type SetUserDataSuccessActionDataType = {
+    userId: number | null,
+    login: string | null,
+    email: string | null,
+    isAuth: boolean
+}
+type SetUserDataSuccessActionType = {
+    type: typeof SET_USER_DATA,
+    data: SetUserDataSuccessActionDataType
+}
+
+export const setUserDataSuccess = (userId: number | null, login: string | null, email: string | null, isAuth: boolean): SetUserDataSuccessActionType => ({
     type: SET_USER_DATA,
     data: {userId, login, email, isAuth}
 })
-export const setMainPhotoSuccess = (mainPhoto) => ({type: SET_MAIN_PHOTO, mainPhoto})
 
-export const setUserData = () => async (dispatch) => {
+type SetMainPhotoSuccessActionType = {
+    type: typeof SET_MAIN_PHOTO,
+    mainPhoto: any
+}
+
+export const setMainPhotoSuccess = (mainPhoto: any): SetMainPhotoSuccessActionType => ({type: SET_MAIN_PHOTO, mainPhoto})
+
+export const setUserData = () => async (dispatch: any) => {
     let response = await authAPI.me()
     if (response.resultCode === 0) {
         let {id, login, email} = response.data
@@ -43,7 +62,7 @@ export const setUserData = () => async (dispatch) => {
     }
 }
 
-export const login = (email, password, rememberMe) => async (dispatch) => {
+export const login = (email: string, password: string, rememberMe: boolean) => async (dispatch: any) => {
     let data = await authAPI.login(email, password, rememberMe)
     if (data.resultCode === 0) {
         dispatch(setUserData())
@@ -55,7 +74,7 @@ export const login = (email, password, rememberMe) => async (dispatch) => {
     }
 }
 
-export const logout = () => async (dispatch) => {
+export const logout = () => async (dispatch: any) => {
     let data = await authAPI.logout()
     if (data.resultCode === 0) {
         dispatch(setUserDataSuccess(null, null, null, false))
@@ -63,7 +82,7 @@ export const logout = () => async (dispatch) => {
 }
 
 
-export const setMainPhoto = () => async (dispatch) => {
+export const setMainPhoto = () => async (dispatch: any) => {
     let data = await authAPI.setProfilePhoto()
     dispatch(setMainPhotoSuccess(data.photos.small))
 }
