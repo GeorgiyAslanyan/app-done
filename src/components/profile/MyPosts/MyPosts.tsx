@@ -3,14 +3,18 @@ import s from "./MyPosts.module.css";
 import Post from "./Post/Post";
 import MyPostReduxForm from "./AddNewPostForm/AddNewPostForm";
 
+type PropsType = {
+    profile: any
+    addPost: (newPostText: string) => void
+}
 
-class MyPosts extends React.PureComponent {
+
+class MyPosts extends React.PureComponent<PropsType> {
     render() {
-        const posts = this.props.profile.posts.map(el => <Post key={el.id} message={el.message}
-                                                               likesCount={el.likesCount} repCount={el.repCount}
-                                                               commentsCount={el.commentsCount}/>)
+        const posts = this.props.profile.posts.map((el: {id: number, message: string, likesCount: number, repCount: number, commentsCount: number}) =>
+            <Post key={el.id} message={el.message} likesCount={el.likesCount} repCount={el.repCount} commentsCount={el.commentsCount}/>)
 
-        const addPost = (value) => {
+        const addPost = (value: any) => {
             this.props.addPost(value.newPostText)
         }
 

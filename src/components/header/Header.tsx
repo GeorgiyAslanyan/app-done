@@ -3,7 +3,14 @@ import s from './Header.module.css'
 import {NavLink} from "react-router-dom";
 import logo from '../../assets/images/logo.svg.png'
 
-const Header = (props) => {
+type PropsType = {
+    isAuth: boolean
+    mainPhoto: any
+    login: string | null
+    logout: () => void
+}
+
+const Header: React.FC<PropsType> = (props) => {
     return (
         <div className={s.header}>
             <h1>Social network</h1>
@@ -12,7 +19,7 @@ const Header = (props) => {
                 {props.isAuth
                     ? <div className={s.headerMe}>
                         <img src={props.mainPhoto} alt=""/>
-                        <h1>{props.login }</h1>
+                        <h1>{props.login}</h1>
                         <button onClick={props.logout}>Выйти</button>
                     </div>
                     :<NavLink to='/login'>Login</NavLink>}

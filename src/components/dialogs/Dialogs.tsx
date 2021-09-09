@@ -4,14 +4,18 @@ import DialogItem from "./dialogItem/DialogItem";
 import MessageItem from "./messageItem/MessageItem";
 import DialogsReduxForm from "./AddMessageForm/AddMessageForm";
 
+type PropsType = {
+    addMessage: (newMessageText: string) => void
+    dialogsPage: any
+}
 
-const Dialogs = (props) => {
-    let addNewMessage = (values) => {
+const Dialogs: React.FC<PropsType> = (props) => {
+    let addNewMessage = (values: any) => {
         props.addMessage(values.newMessageText);
     }
 
-    const dialogsElement = props.dialogsPage.users.map(el => <DialogItem key={el.id} id={el.userId} userName={el.userName}/>)
-    const messagesElement = props.dialogsPage.dialogs.map(el => <MessageItem key={el.id} message={el.message}/>)
+    const dialogsElement = props.dialogsPage.users.map((el: {id: number, userId: number, userName: string}) => <DialogItem key={el.id} id={el.userId} userName={el.userName}/>)
+    const messagesElement = props.dialogsPage.dialogs.map((el: {id: number, message: string }) => <MessageItem key={el.id} message={el.message}/>)
 
     return (
         <div className={s.dialogs}>

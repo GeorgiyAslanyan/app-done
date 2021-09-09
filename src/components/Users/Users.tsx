@@ -3,16 +3,27 @@ import s from "./Users.module.css";
 import ava from "../../assets/images/avatar.png";
 import {NavLink} from "react-router-dom";
 import Paginator from "../common/paginator/Paginator";
+import {UsersType} from "../../types/types";
 
-const Users = (props) => {
+type PropsType = {
+    currentPage: number,
+    pageSize: number,
+    totalUsersCount: number,
+    users: Array<UsersType>,
+    onPageChanged: (pageNumber: number) => void,
+    followingInProgress: Array<number>,
+    unfollow: (id: number) => void,
+    follow: (id: number) => void
+}
 
+const Users: React.FC<PropsType> = ({currentPage, pageSize, totalUsersCount, users, onPageChanged, ...props}) => {
     return (
         <div>
-            <Paginator totalItemsCount={props.totalUsersCount} pageSize={props.pageSize}
-                       currentPage={props.currentPage} onPageChanged={props.onPageChanged}/>
+            <Paginator totalItemsCount={totalUsersCount} pageSize={pageSize}
+                       currentPage={currentPage} onPageChanged={onPageChanged}/>
             <div className={s.content}>
                 <div>
-                    {props.users.map(u => <div key={u.id} className={s.user}>
+                    {users.map(u => <div key={u.id} className={s.user}>
                         <div className={s.leftBlock}>
                             <NavLink to={`/profile/${u.id}`}>
                                 <div className={s.ava}>

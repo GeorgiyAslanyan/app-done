@@ -1,7 +1,11 @@
 import React from "react";
 import s from './ProfileFavourite.module.css'
 
-const ProfileFavourite = () => {
+type PropsType = {
+
+}
+
+const ProfileFavourite: React.FC<PropsType> = (props) => {
     return (
         <div className={s.favourite}>
 
