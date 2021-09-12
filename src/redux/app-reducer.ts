@@ -1,4 +1,6 @@
 import {setUserData} from "./auth-reducer";
+import {ThunkAction} from "redux-thunk";
+import {AppStateType} from "./redux-store";
 
 const INITIALIZED_SUCCESS = 'samurai-network/app/INITIALIZED-SUCCESS'
 
@@ -10,7 +12,7 @@ let initialState: InitialStateType = {
     initialized: false
 }
 
-const appReducer = (state = initialState, action: any): InitialStateType => {
+const appReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
     switch (action.type) {
         case INITIALIZED_SUCCESS:
             return {
@@ -22,15 +24,19 @@ const appReducer = (state = initialState, action: any): InitialStateType => {
     }
 }
 
+type ActionsTypes = InitializedSuccessActionType
+
 type InitializedSuccessActionType = {
     type: typeof INITIALIZED_SUCCESS
 }
 
 export const initializedSuccess = (): InitializedSuccessActionType => ({type: INITIALIZED_SUCCESS})
 
+type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
+
 export const initializeApp = () => {
     return (dispatch: any) => {
-        let promise = dispatch(setUserData)
+        let promise = dispatch(setUserData())
         Promise.all([promise]).then(() => {
             dispatch(initializedSuccess())
         })
