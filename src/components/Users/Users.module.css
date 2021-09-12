@@ -41,6 +41,18 @@
     padding: 5px;
 }
 
+.infoBlock a{
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 500;
+    color: black;
+    transition: color .2s linear;
+}
+
+.infoBlock a:hover{
+    color: #0099ff;
+}
+
 .ava img{
     border-radius: 15px;
     max-width: 75px;
