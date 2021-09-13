@@ -1,7 +1,8 @@
 import {authAPI} from "../api/api";
-import { stopSubmit } from "redux-form";
+import {stopSubmit} from "redux-form";
 import {ThunkAction} from "redux-thunk";
 import {AppStateType} from "./redux-store";
+import {ResultCodesEnum} from "../types/types";
 
 const SET_USER_DATA = 'samurai-network/auth/SET-USER-DATA'
 const SET_MAIN_PHOTO = 'samurai-network/auth/SET-MAIN_PHOTO'
@@ -64,7 +65,7 @@ type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
 
 export const setUserData = (): ThunkType => async (dispatch) => {
     let response = await authAPI.me()
-    if (response.resultCode === 0) {
+    if (response.resultCode === ResultCodesEnum.Success) {
         let {id, login, email} = response.data
         dispatch(setUserDataSuccess(id, login, email, true))
     }
@@ -72,7 +73,7 @@ export const setUserData = (): ThunkType => async (dispatch) => {
 
 export const login = (email: string, password: string, rememberMe: boolean) => async (dispatch: any) => {
     let data = await authAPI.login(email, password, rememberMe)
-    if (data.resultCode === 0) {
+    if (data.resultCode === ResultCodesEnum.Success) {
         dispatch(setUserData())
     } else {
         let message = data.messages.length > 0

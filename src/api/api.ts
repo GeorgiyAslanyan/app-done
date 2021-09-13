@@ -1,4 +1,7 @@
 import axios from "axios";
+import {FollowResponseType, GetUsersResponseType,
+    LoginResponseType, MeResponseType, ProfileType,
+    UpdateStatusResponseType} from "../types/types";
 
 const instance = axios.create({
     withCredentials: true,
@@ -8,33 +11,34 @@ const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.0/'
 })
 
+
 export const UsersAPI = {
-    getUsers(currentPage = 1, pageSize = 10) {
-        return instance.get(`users?page=${currentPage}&count=${pageSize}`)
+    getUsers(currentPage: number = 1, pageSize: number = 10) {
+        return instance.get<GetUsersResponseType>(`users?page=${currentPage}&count=${pageSize}`)
             .then(response => {
                 return response.data
             })
     },
-    follow(userId) {
-        return instance.post(`follow/${userId}`)
+    follow(userId: number) {
+        return instance.post<FollowResponseType>(`follow/${userId}`)
             .then(response => {
                 return response.data
             })
     },
-    unfollow(userId) {
-        return instance.delete(`follow/${userId}`)
+    unfollow(userId: number) {
+        return instance.delete<FollowResponseType>(`follow/${userId}`)
             .then(response => {
                 return response.data
             })
     },
-    getProfile(userId) {
+    getProfile(userId: number) {
         return profileAPI.getProfile(userId)
     }
 }
 
 export const authAPI = {
     me() {
-        return instance.get(`auth/me`)
+        return instance.get<MeResponseType>(`auth/me`)
             .then(response => {
                 return response.data
             })
@@ -45,14 +49,14 @@ export const authAPI = {
                 return response.data
             })
     },
-    login(email, password, rememberMe = false) {
-        return instance.post(`auth/login`, {email, password, rememberMe})
+    login(email: string, password: string, rememberMe: boolean = false) {
+        return instance.post<LoginResponseType>(`auth/login`, {email, password, rememberMe})
             .then(response => {
                 return response.data
             })
     },
     logout() {
-        return instance.delete(`auth/login`)
+        return instance.delete<LoginResponseType>(`auth/login`)
             .then(response => {
                 return response.data
             })
@@ -60,25 +64,25 @@ export const authAPI = {
 }
 
 export const profileAPI = {
-    getProfile(userId) {
-        return instance.get(`profile/${userId}`)
+    getProfile(userId: number) {
+        return instance.get<ProfileType>(`profile/${userId}`)
             .then(response => {
                 return response.data
             })
     },
-    getStatus(userId) {
+    getStatus(userId: number) {
         return instance.get(`profile/status/${userId}`)
             .then(response => {
                 return response.data
             })
     },
-    updateStatus(status) {
-        return instance.put(`profile/status`, {status: status})
+    updateStatus(status: string) {
+        return instance.put<UpdateStatusResponseType>(`profile/status`, {status: status})
             .then(response => {
                 return response.data
             })
     },
-    savePhoto(photoFile) {
+    savePhoto(photoFile: any) {
         const formData = new FormData()
         formData.append('image', photoFile)
         return instance.put('profile/photo', formData)

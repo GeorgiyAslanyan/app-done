@@ -35,3 +35,42 @@ export type UsersType = {
     photos: PhotosType
     followed: boolean
 }
+
+export enum ResultCodesEnum {
+    Success = 0,
+    Error = 1,
+}
+export enum ResultCodeForCaptchaEnum {
+    CaptchaIsRequired = 10,
+}
+
+
+export type GetUsersResponseType = {
+    items: Array<UsersType>
+    totalCount: number
+    error: string
+}
+export type FollowResponseType = {
+    data: any
+    resultCode: ResultCodesEnum | ResultCodeForCaptchaEnum
+    messages: Array<string>
+}
+
+
+export type MeResponseType = {
+    data: {id: number, email: string, login: string}
+    resultCode: ResultCodesEnum | ResultCodeForCaptchaEnum
+    messages: Array<string>
+}
+export type LoginResponseType = {
+    data: {userId: number}
+    resultCode: ResultCodesEnum | ResultCodeForCaptchaEnum
+    messages: Array<string>
+}
+
+
+export type UpdateStatusResponseType = {
+    data: any
+    resultCode: ResultCodesEnum | ResultCodeForCaptchaEnum
+    messages: Array<string>
+}
