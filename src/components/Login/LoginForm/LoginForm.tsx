@@ -1,12 +1,17 @@
-import {Field, reduxForm} from "redux-form";
+import {Field, InjectedFormProps, reduxForm} from "redux-form";
 import {Input} from "../../common/FormsControl/FormsControl";
 import React from "react";
 import {minLengthCreator, required} from "../../../utils/validators/validators";
 import s from './LoginForm.module.css'
+import {LoginFormValuesType} from "../../../types/types";
 
 const minLength8 = minLengthCreator(8)
 
-const LoginForm = (props) => {
+type LoginFormOwnProps = {
+
+}
+
+const LoginForm: React.FC<InjectedFormProps<LoginFormValuesType, LoginFormOwnProps> & LoginFormOwnProps> = (props) => {
     return (
         <form className={s.loginForm} onSubmit={props.handleSubmit}>
             <div>
@@ -27,6 +32,6 @@ const LoginForm = (props) => {
     )
 }
 
-const LoginReduxForm = reduxForm({form: 'login'})(LoginForm)
+const LoginReduxForm = reduxForm<LoginFormValuesType, LoginFormOwnProps>({form: 'login'})(LoginForm)
 
 export default LoginReduxForm

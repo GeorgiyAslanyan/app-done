@@ -1,7 +1,8 @@
 import s from './FormsControl.module.css'
 import React from "react";
+import {WrappedFieldProps} from "redux-form";
 
-export const Textarea = ({input, meta, ...props}) => {
+export const Textarea: React.FC<WrappedFieldProps> = ({input, meta, ...props}) => {
     const hasError = meta.touched && meta.error
     return(
         <div className={s.formControl + ' ' + (hasError ? s.error : '')}>
@@ -13,7 +14,7 @@ export const Textarea = ({input, meta, ...props}) => {
     )
 }
 
-export const Input = ({input, meta, ...props}) => {
+export const Input: React.FC<WrappedFieldProps> = ({input, meta, ...props}) => {
     const hasError = meta.touched && meta.error
     return(
         <div className={s.formControl + ' ' + (hasError ? s.error : '')}>

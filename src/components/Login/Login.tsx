@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import {login} from "../../redux/auth-reducer";
 import {Redirect} from "react-router-dom";
 import {AppStateType} from "../../redux/redux-store";
+import { LoginFormValuesType } from "../../types/types";
 
 type MapStateToPropsType = {
     isAuth: boolean
@@ -21,7 +22,7 @@ type OwnPropsType = {
 type PropsType = MapStateToPropsType & MapDispatchToPropsType & OwnPropsType
 
 const Login: React.FC<PropsType> = (props) => {
-    const onSubmit = (formData: any) => {
+    const onSubmit = (formData: LoginFormValuesType) => {
         props.login(formData.email, formData.password, formData.rememberMe)
         if(props.isAuth) {
             return <Redirect to={'/profile'}/>
@@ -31,7 +32,7 @@ const Login: React.FC<PropsType> = (props) => {
     return (
         <div className={s.login}>
             <h1>Login</h1>
-            <LoginReduxForm onSubmit={onSubmit} {...props}/>
+            <LoginReduxForm {...props}/>
         </div>
     )
 }

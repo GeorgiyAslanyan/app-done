@@ -74,3 +74,9 @@ export type UpdateStatusResponseType = {
     resultCode: ResultCodesEnum | ResultCodeForCaptchaEnum
     messages: Array<string>
 }
+
+export type LoginFormValuesType = {
+    email: string
+    password: string
+    rememberMe: boolean
+}
