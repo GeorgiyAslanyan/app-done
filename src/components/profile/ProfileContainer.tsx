@@ -2,7 +2,7 @@ import React from "react";
 import Profile from "./Profile";
 import {connect} from "react-redux";
 import {getStatus, savePhoto, setUserProfile, updateStatus} from "../../redux/profile-reducer";
-import {withRouter} from "react-router-dom";
+import {RouteComponentProps, withRouter} from "react-router-dom";
 import {compose} from "redux";
 import {ProfileType} from "../../types/types";
 import {AppStateType} from "../../redux/redux-store";
@@ -21,35 +21,39 @@ type MapDispatchPropsType = {
     savePhoto: (file: any) => void
 }
 
-type OwnPropsType = {
-    match: any
-    history: any
+type PathParamsType = {
+    userId: string
 }
 
-type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType
+export type ProfileContainerPropsType = MapStatePropsType & MapDispatchPropsType & RouteComponentProps<PathParamsType>
 
 
-class ProfileContainer extends React.Component<PropsType>{
+class ProfileContainer extends React.Component<ProfileContainerPropsType>{
     componentDidMount() {
         this.refreshProfile()
     }
 
-    componentDidUpdate(prevProps: PropsType) {
+    componentDidUpdate(prevProps: ProfileContainerPropsType) {
         if(this.props.match.params.userId !== prevProps.match.params.userId) {
             this.refreshProfile()
         }
     }
 
     refreshProfile() {
-        let userId = this.props.match.params.userId
+        let userId: number | null = +this.props.match.params.userId
         if(!userId) {
             userId = this.props.authorizedUserId
             if(!userId){
+                // todo maybe replace push to with Redirect?
                 this.props.history.push('/login')
             }
         }
-        this.props.setUserProfile(userId)
-        this.props.getStatus(userId)
+        if(!userId) {
+            console.error('id should exists in URI params or in state')
+        } else {
+            this.props.setUserProfile(userId)
+            this.props.getStatus(userId)
+        }
     }
 
     render() {
@@ -72,8 +76,8 @@ let mapStateToProps = (state: AppStateType): MapStatePropsType => {
     }
 }
 
-export default compose(
-    connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, {
+export default compose<React.ComponentType>(
+    connect<MapStatePropsType, MapDispatchPropsType, {}, AppStateType>(mapStateToProps, {
         setUserProfile,
         getStatus,
         updateStatus,

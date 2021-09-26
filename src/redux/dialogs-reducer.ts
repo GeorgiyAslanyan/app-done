@@ -1,4 +1,4 @@
-const ADD_MESSAGE = 'samurai-network/dialogs/ADD-MESSAGE'
+import {BaseThunkType, InferActionsTypes} from "./redux-store";
 
 type UsersType = {
     userId: number,
@@ -25,11 +25,10 @@ let initialState = {
     ] as Array<DialogsType>,
 }
 
-export type InitialStateType = typeof initialState
 
 const dialogsReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
     switch (action.type) {
-        case ADD_MESSAGE:
+        case 'samurai-network/dialogs/ADD-MESSAGE':
             let newMessage = {
                 userId: 1,
                 id: state.dialogs.length + 1,
@@ -44,13 +43,16 @@ const dialogsReducer = (state = initialState, action: ActionsTypes): InitialStat
     }
 }
 
-type ActionsTypes = AddMessageActionCreatorType
-
-type AddMessageActionCreatorType = {
-    type: typeof ADD_MESSAGE,
-    newMessageText: string
+export const actions = {
+    addMessageSuccess: (newMessageText: string) => ({type: 'samurai-network/dialogs/ADD-MESSAGE', newMessageText}as const)
 }
 
-export const addMessageActionCreator = (newMessageText: string): AddMessageActionCreatorType => ({type: ADD_MESSAGE, newMessageText})
+export const addMessage = (newMessageText: string): ThunkType => async (dispatch) => {
+    dispatch(actions.addMessageSuccess(newMessageText))
+}
 
 export default dialogsReducer
+
+export type InitialStateType = typeof initialState
+type ActionsTypes =  InferActionsTypes<typeof actions>
+type ThunkType = BaseThunkType<ActionsTypes>

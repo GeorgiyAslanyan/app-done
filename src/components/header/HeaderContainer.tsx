@@ -12,7 +12,7 @@ type MapStateToPropsType = {
 }
 
 type MapDispatchToPropsType = {
-    setMainPhoto: any
+    setMainPhoto: () => void
     logout: () => void
 }
 
@@ -43,7 +43,7 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     }
 }
 
-export default compose(
+export default compose<React.ComponentType>(
     connect<MapStateToPropsType, MapDispatchToPropsType, OwnPropsType, AppStateType>(mapStateToProps, {
         setMainPhoto,
         logout

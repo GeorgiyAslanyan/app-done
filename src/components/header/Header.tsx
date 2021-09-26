@@ -5,7 +5,7 @@ import logo from '../../assets/images/logo.svg.png'
 
 type PropsType = {
     isAuth: boolean
-    mainPhoto: any
+    mainPhoto: string
     login: string | null
     logout: () => void
 }

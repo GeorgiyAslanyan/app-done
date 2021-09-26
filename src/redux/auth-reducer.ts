@@ -1,11 +1,7 @@
-import {authAPI} from "../api/api";
-import {stopSubmit} from "redux-form";
-import {ThunkAction} from "redux-thunk";
-import {AppStateType} from "./redux-store";
+import {FormAction, stopSubmit} from "redux-form";
+import {BaseThunkType, InferActionsTypes} from "./redux-store";
 import {ResultCodesEnum} from "../types/types";
-
-const SET_USER_DATA = 'samurai-network/auth/SET-USER-DATA'
-const SET_MAIN_PHOTO = 'samurai-network/auth/SET-MAIN_PHOTO'
+import {authAPI} from "../api/auth-api";
 
 let initialState = {
     userId: null as number | null,
@@ -15,16 +11,14 @@ let initialState = {
     mainPhoto: '' as string | null
 }
 
-export type InitialStateType = typeof initialState
-
 const authReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
     switch (action.type) {
-        case SET_USER_DATA:
+        case 'samurai-network/auth/SET-USER-DATA':
             return {
                 ...state,
                 ...action.data
             }
-        case SET_MAIN_PHOTO:
+        case 'samurai-network/auth/SET-MAIN_PHOTO':
             return {
                 ...state,
                 mainPhoto: action.mainPhoto
@@ -34,44 +28,24 @@ const authReducer = (state = initialState, action: ActionsTypes): InitialStateTy
     }
 }
 
-type ActionsTypes = SetUserDataSuccessActionType | SetMainPhotoSuccessActionType
-
-type SetUserDataSuccessActionDataType = {
-    userId: number | null,
-    login: string | null,
-    email: string | null,
-    isAuth: boolean
+export const actions = {
+    setUserDataSuccess: (userId: number | null, login: string | null, email: string | null, isAuth: boolean) => ({
+        type: 'samurai-network/auth/SET-USER-DATA',
+        data: {userId, login, email, isAuth}
+    }as const),
+    setMainPhotoSuccess: (mainPhoto: any) => ({type: 'samurai-network/auth/SET-MAIN_PHOTO', mainPhoto} as const )
 }
 
-type SetUserDataSuccessActionType = {
-    type: typeof SET_USER_DATA,
-    data: SetUserDataSuccessActionDataType
-}
-
-type SetMainPhotoSuccessActionType = {
-    type: typeof SET_MAIN_PHOTO,
-    mainPhoto: any
-}
-
-
-export const setUserDataSuccess = (userId: number | null, login: string | null, email: string | null, isAuth: boolean): SetUserDataSuccessActionType => ({
-    type: SET_USER_DATA,
-    data: {userId, login, email, isAuth}
-})
-
-export const setMainPhotoSuccess = (mainPhoto: any): SetMainPhotoSuccessActionType => ({type: SET_MAIN_PHOTO, mainPhoto})
-
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
 
 export const setUserData = (): ThunkType => async (dispatch) => {
     let response = await authAPI.me()
     if (response.resultCode === ResultCodesEnum.Success) {
         let {id, login, email} = response.data
-        dispatch(setUserDataSuccess(id, login, email, true))
+        dispatch(actions.setUserDataSuccess(id, login, email, true))
     }
 }
 
-export const login = (email: string, password: string, rememberMe: boolean) => async (dispatch: any) => {
+export const login = (email: string, password: string, rememberMe: boolean): ThunkType => async (dispatch) => {
     let data = await authAPI.login(email, password, rememberMe)
     if (data.resultCode === ResultCodesEnum.Success) {
         dispatch(setUserData())
@@ -86,14 +60,18 @@ export const login = (email: string, password: string, rememberMe: boolean) => a
 export const logout = (): ThunkType => async (dispatch) => {
     let data = await authAPI.logout()
     if (data.resultCode === 0) {
-        dispatch(setUserDataSuccess(null, null, null, false))
+        dispatch(actions.setUserDataSuccess(null, null, null, false))
     }
 }
 
-
 export const setMainPhoto = (): ThunkType => async (dispatch) => {
     let data = await authAPI.setProfilePhoto()
-    dispatch(setMainPhotoSuccess(data.photos.small))
+    dispatch(actions.setMainPhotoSuccess(data.photos.small))
 }
 
 export default authReducer
+
+export type InitialStateType = typeof initialState
+type ActionsTypes =  InferActionsTypes<typeof actions>
+type ThunkType = BaseThunkType<ActionsTypes | FormAction>
+

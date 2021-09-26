@@ -1,13 +1,8 @@
-import {profileAPI, UsersAPI} from "../api/api";
 import {ProfileType, PostsType, PhotosType} from "../types/types";
-import {ThunkAction} from "redux-thunk";
-import {AppStateType} from "./redux-store";
-
-const ADD_POST = 'samurai-network/profile/ADD-POST'
-const SET_USER_PROFILE = 'samurai-network/profile/SET-USER-PROFILE'
-const SET_STATUS = 'samurai-network/profile/SET-STATUS'
-const SAVE_PHOTO_SUCCESS = 'samurai-network/profile/SAVE-PHOTO-SUCCESS'
-
+import {BaseThunkType, InferActionsTypes} from "./redux-store";
+import {UsersAPI} from "../api/users-api";
+import {profileAPI} from "../api/profile-api";
+import { FormAction } from "redux-form";
 
 let initialState = {
     profile: null as ProfileType | null,
@@ -20,11 +15,9 @@ let initialState = {
     status: '' as string,
 }
 
-export type InitialStateType = typeof  initialState
-
 const profileReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
     switch (action.type) {
-        case ADD_POST:
+        case 'samurai-network/profile/ADD-POST':
             let newPost = {
                 id: state.posts.length + 1,
                 message: action.newPostText,
@@ -36,17 +29,17 @@ const profileReducer = (state = initialState, action: ActionsTypes): InitialStat
                 ...state,
                 posts: [...state.posts, newPost],
             }
-        case SET_USER_PROFILE :
+        case 'samurai-network/profile/SET-USER-PROFILE' :
             return {
                 ...state,
                 profile: action.profile
             }
-        case SET_STATUS :
+        case 'samurai-network/profile/SET-STATUS' :
             return {
                 ...state,
                 status: action.status
             }
-        case SAVE_PHOTO_SUCCESS:
+        case 'samurai-network/profile/SAVE-PHOTO-SUCCESS':
             return {
                 ...state,
                 profile: {...state.profile, photos: action.photos} as ProfileType
@@ -56,54 +49,43 @@ const profileReducer = (state = initialState, action: ActionsTypes): InitialStat
     }
 }
 
-type ActionsTypes = AddPostCreatorActionType | SetUserProfileSuccessActionType | SetStatusActionType | SavePhotoSuccessActionType
-
-type AddPostCreatorActionType = {
-    type: typeof ADD_POST,
-    newPostText: string
-}
-type SetUserProfileSuccessActionType = {
-    type: typeof SET_USER_PROFILE,
-    profile: ProfileType
-}
-type SetStatusActionType = {
-    type: typeof SET_STATUS,
-    status: string
-}
-type SavePhotoSuccessActionType = {
-    type: typeof SAVE_PHOTO_SUCCESS,
-    photos: PhotosType
+export const actions = {
+    addPostSuccess: (newPostText: string) => ({type: 'samurai-network/profile/ADD-POST', newPostText} as const),
+    setUserProfileSuccess: (profile: ProfileType) => ({type: 'samurai-network/profile/SET-USER-PROFILE', profile} as const),
+    setStatus: (status: string) => ({type: 'samurai-network/profile/SET-STATUS', status} as const),
+    savePhotoSuccess: (photos: PhotosType) => ({type: 'samurai-network/profile/SAVE-PHOTO-SUCCESS', photos} as const)
 }
 
-export const addPostActionCreator = (newPostText: string): AddPostCreatorActionType => ({type: ADD_POST, newPostText})
-export const setUserProfileSuccess = (profile: ProfileType): SetUserProfileSuccessActionType => ({type: SET_USER_PROFILE, profile})
-export const setStatus = (status: string): SetStatusActionType => ({type: SET_STATUS, status})
-export const savePhotoSuccess = (photos: PhotosType): SavePhotoSuccessActionType => ({type: SAVE_PHOTO_SUCCESS, photos})
-
-type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>
+export const addPost = (newPostText: string) : ThunkType => async (dispatch) => {
+    dispatch(actions.addPostSuccess(newPostText))
+}
 
 export const setUserProfile = (userId: number) : ThunkType => async (dispatch) => {
     let data = await UsersAPI.getProfile(userId)
-    dispatch(setUserProfileSuccess(data))
+    dispatch(actions.setUserProfileSuccess(data))
 }
 
 export const getStatus = (userId: number): ThunkType => async (dispatch) => {
     let data = await profileAPI.getStatus(userId)
-    dispatch(setStatus(data))
+    dispatch(actions.setStatus(data))
 }
 
 export const updateStatus = (status: string): ThunkType => async (dispatch) => {
     let data = await profileAPI.updateStatus(status)
     if (data.resultCode === 0) {
-        dispatch(setStatus(status))
+        dispatch(actions.setStatus(status))
     }
 }
 
-export const savePhoto = (file: any): ThunkType => async (dispatch) => {
+export const savePhoto = (file: File): ThunkType => async (dispatch) => {
     let data = await profileAPI.savePhoto(file)
-    if (data.data.resultCode === 0) {
-        dispatch(savePhotoSuccess(data.data.photos))
+    if (data.resultCode === 0) {
+        dispatch(actions.savePhotoSuccess(data.data.photos))
     }
 }
 
 export default profileReducer
+
+export type InitialStateType = typeof  initialState
+type ActionsTypes =  InferActionsTypes<typeof actions>
+type ThunkType = BaseThunkType<ActionsTypes | FormAction>

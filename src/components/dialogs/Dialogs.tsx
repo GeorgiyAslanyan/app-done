@@ -3,14 +3,15 @@ import s from './Dialogs.module.css'
 import DialogItem from "./dialogItem/DialogItem";
 import MessageItem from "./messageItem/MessageItem";
 import DialogsReduxForm from "./AddMessageForm/AddMessageForm";
+import {InitialStateType} from "../../redux/dialogs-reducer";
 
 type PropsType = {
     addMessage: (newMessageText: string) => void
-    dialogsPage: any
+    dialogsPage: InitialStateType
 }
 
 const Dialogs: React.FC<PropsType> = (props) => {
-    let addNewMessage = (values: any) => {
+    let addNewMessage = (values: {newMessageText: string}) => {
         props.addMessage(values.newMessageText);
     }
 

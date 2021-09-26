@@ -1,4 +1,4 @@
-import {addPostActionCreator} from "../../../redux/profile-reducer";
+import {addPost} from "../../../redux/profile-reducer";
 import MyPosts from "./MyPosts";
 import {connect} from "react-redux";
 import {AppStateType} from "../../../redux/redux-store";
@@ -17,8 +17,6 @@ type OwnPropsType = {
 
 }
 
-type PropsType = MapStateToPropsType & MapDispatchToPropsType & OwnPropsType
-
 let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     return {
         newPostText: state.profilePage.newPostText,
@@ -29,7 +27,7 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
 let mapDispatchToProps = (dispatch: any): MapDispatchToPropsType => {
     return {
         addPost: (newPostText) => {
-            dispatch(addPostActionCreator(newPostText))
+            dispatch(addPost(newPostText))
         }
     }
 }

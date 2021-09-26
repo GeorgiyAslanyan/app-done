@@ -10,7 +10,7 @@ type PropsType = {
     profile: ProfileType | null
     isOwner: boolean
 
-    savePhoto: (file: any) => void
+    savePhoto: (file: File) => void
     updateStatus: (status: string) => void
 }
 

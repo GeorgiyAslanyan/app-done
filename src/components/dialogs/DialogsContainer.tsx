@@ -1,4 +1,4 @@
-import {addMessageActionCreator} from "../../redux/dialogs-reducer";
+import {addMessage} from "../../redux/dialogs-reducer";
 import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
@@ -17,23 +17,15 @@ type OwnPropsType = {
 
 }
 
-type PropsType = MapStateToPropsType & MapDispatchToPropsType & OwnPropsType
-
 let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     return {
         dialogsPage: state.dialogsPage,
     }
 }
 
-let mapDispatchToProps = (dispatch: any): MapDispatchToPropsType => {
-    return {
-        addMessage: (newMessageText: string) => {
-            dispatch(addMessageActionCreator(newMessageText))
-        }
-    }
-}
-
-export default compose(
-    connect<MapStateToPropsType, MapDispatchToPropsType, OwnPropsType, AppStateType>(mapStateToProps, mapDispatchToProps),
+export default compose<React.ComponentType>(
+    connect<MapStateToPropsType, MapDispatchToPropsType, OwnPropsType, AppStateType>(mapStateToProps, {
+        addMessage
+    }),
     withAuthRedirect)
 (Dialogs)

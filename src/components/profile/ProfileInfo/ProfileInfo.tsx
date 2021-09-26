@@ -10,7 +10,7 @@ type PropsType = {
     isOwner: boolean
     status: string
     updateStatus: (status: string) => void
-    savePhoto: (file: any) => void
+    savePhoto: (file: File) => void
 }
 
 const ProfileInfo: React.FC<PropsType> = (props) => {
@@ -19,9 +19,9 @@ const ProfileInfo: React.FC<PropsType> = (props) => {
     }
 
     const onMainPhotoSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
-        // if(e.target.files.length) {
-        //     props.savePhoto(e.target.files[0])
-        // }
+        if(e.target.files?.length) {
+            props.savePhoto(e.target.files[0])
+        }
     }
 
     return (
