@@ -9,6 +9,12 @@ export const UsersAPI = {
                 return response.data
             })
     },
+    getFollowedUsers(currentPage: number = 1, pageSize: number = 10, friend: boolean = true) {
+        return instance.get<GetUsersResponseType>(`users?friend=${friend}&page=${currentPage}&count=${pageSize}`)
+            .then(response => {
+                return response.data
+            })
+    },
     follow(userId: number) {
         return instance.post<APIResponseType>(`follow/${userId}`)
             .then(response => {

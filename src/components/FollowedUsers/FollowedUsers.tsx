@@ -1,5 +1,5 @@
 import React from "react";
-import s from "./Users.module.css";
+import s from "./FollowedUsers.module.css";
 import ava from "../../assets/images/avatar.png";
 import {NavLink} from "react-router-dom";
 import Paginator from "../common/paginator/Paginator";
@@ -16,7 +16,7 @@ type PropsType = {
     follow: (id: number) => void
 }
 
-const Users: React.FC<PropsType> = ({currentPage, pageSize, totalUsersCount, users, onPageChanged, ...props}) => {
+const FollowedUsers: React.FC<PropsType> = ({currentPage, pageSize, totalUsersCount, users, onPageChanged, ...props}) => {
     return (
         <div>
             <Paginator totalItemsCount={totalUsersCount} pageSize={pageSize}
@@ -54,4 +54,4 @@ const Users: React.FC<PropsType> = ({currentPage, pageSize, totalUsersCount, use
 }
 
 
-export default Users
+export default FollowedUsers

@@ -3,6 +3,7 @@ import React from 'react'
 import Nav from "./components/nav/Nav";
 import {Route, withRouter} from "react-router-dom";
 import UsersContainer from "./components/Users/UsersContainer";
+import FollowedUsersContainer from "./components/FollowedUsers/FollowedUsersContainer";
 import HeaderContainer from "./components/header/HeaderContainer";
 import Login from "./components/Login/Login";
 import {connect} from "react-redux";
@@ -50,6 +51,7 @@ class App extends React.Component<PropsType> {
                         <Route path='/dialogs' render={() => <SuspendedDialogs/>}/>
                         <Route path='/users' render={() => <UsersContainer pageTitle={'Title'}/>}/>
                         <Route path='/login' render={() => <Login/>}/>
+                        <Route path='/followed' render={() => <FollowedUsersContainer  pageTitle={'Title'}/>}/>
                     </div>
                 </div>
             </div>

@@ -92,6 +92,16 @@ export const requestUsers = (currentPage: number,
     dispatch(actions.setUsers(data.items))
 }
 
+export const requestFollowedUsers = (currentPage: number,
+                             pageSize: number): ThunkType => async (dispatch, getState) => {
+    dispatch(actions.toggleIsFetching(true))
+    let data = await UsersAPI.getFollowedUsers(currentPage, pageSize, true)
+    dispatch(actions.setTotalUsersCount(data.totalCount))
+    dispatch(actions.toggleIsFetching(false))
+    dispatch(actions.setCurrentPageSuccess(currentPage))
+    dispatch(actions.setUsers(data.items))
+}
+
 export const follow = (userId: number): ThunkType => async (dispatch) => {
     dispatch(actions.toggleFollowingProgress(true, userId))
     let data = await UsersAPI.follow(userId)

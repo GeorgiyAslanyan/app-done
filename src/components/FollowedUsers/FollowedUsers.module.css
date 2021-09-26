@@ -1,0 +1,59 @@
+.content {
+    display: grid;
+    grid-template-columns: 10fr 4fr;
+}
+
+.searchMenu {
+    padding: 10px;
+    background-color: lightgray;
+    border-radius: 10px;
+    max-height: 500px;
+    margin: 10px;
+}
+
+.user {
+    background-color: lightgray;
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+}
+
+.leftBlock {
+    text-align: center;
+    padding: 5px;
+}
+
+/*.leftBlock button{*/
+/*    min-width: 80px;*/
+/*    border-radius: 5px;*/
+/*    border-color: #0099ff;*/
+/*    padding: 5px;*/
+/*    margin: 5px;*/
+/*    cursor: pointer;*/
+/*    font-size: 15px;*/
+/*    font-weight: 700;*/
+/*    color: white;*/
+/*    background-color: #0099ff;*/
+/*}*/
+
+.infoBlock {
+    padding: 5px;
+}
+
+.infoBlock a{
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 500;
+    color: black;
+    transition: color .2s linear;
+}
+
+.infoBlock a:hover{
+    color: #0099ff;
+}
+
+.ava img{
+    border-radius: 15px;
+    max-width: 75px;
+}
