@@ -4,6 +4,8 @@ import ava from "../../assets/images/avatar.png";
 import {NavLink} from "react-router-dom";
 import Paginator from "../common/paginator/Paginator";
 import {UsersType} from "../../types/types";
+import UsersSearchForm from "../Users/UsersSearchForm";
+import {FilterType} from "../../redux/users-reducer";
 
 type PropsType = {
     currentPage: number,
@@ -11,6 +13,7 @@ type PropsType = {
     totalUsersCount: number,
     users: Array<UsersType>,
     onPageChanged: (pageNumber: number) => void,
+    onFilterChanged: (filter: FilterType) => void,
     followingInProgress: Array<number>,
     unfollow: (id: number) => void,
     follow: (id: number) => void
@@ -46,7 +49,9 @@ const FollowedUsers: React.FC<PropsType> = ({currentPage, pageSize, totalUsersCo
                     </div>)}
                 </div>
                 <div className={s.searchMenu}>
-                    Search menu
+                    <div className={s.search}>
+                        <UsersSearchForm onFilterChanged={props.onFilterChanged}/>
+                    </div>
                 </div>
             </div>
         </div>

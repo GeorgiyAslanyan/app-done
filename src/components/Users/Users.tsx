@@ -4,6 +4,8 @@ import ava from "../../assets/images/avatar.png";
 import {NavLink} from "react-router-dom";
 import Paginator from "../common/paginator/Paginator";
 import {UsersType} from "../../types/types";
+import UsersSearchForm from "./UsersSearchForm";
+import {FilterType} from "../../redux/users-reducer";
 
 type PropsType = {
     currentPage: number,
@@ -11,9 +13,10 @@ type PropsType = {
     totalUsersCount: number,
     users: Array<UsersType>,
     onPageChanged: (pageNumber: number) => void,
+    onFilterChanged: (filter: FilterType) => void,
     followingInProgress: Array<number>,
     unfollow: (id: number) => void,
-    follow: (id: number) => void
+    follow: (id: number) => void,
 }
 
 const Users: React.FC<PropsType> = ({currentPage, pageSize, totalUsersCount, users, onPageChanged, ...props}) => {
@@ -34,8 +37,14 @@ const Users: React.FC<PropsType> = ({currentPage, pageSize, totalUsersCount, use
                             </NavLink>
                             <div>
                                 {u.followed
-                                    ? <button disabled={props.followingInProgress.some(id => id === u.id)} onClick={() => {props.unfollow(u.id)}}>Отписаться</button>
-                                    : <button disabled={props.followingInProgress.some(id => id === u.id)} onClick={() => {props.follow(u.id)}}>Подписаться</button>}
+                                    ? <button disabled={props.followingInProgress.some(id => id === u.id)}
+                                              onClick={() => {
+                                                  props.unfollow(u.id)
+                                              }}>Отписаться</button>
+                                    : <button disabled={props.followingInProgress.some(id => id === u.id)}
+                                              onClick={() => {
+                                                  props.follow(u.id)
+                                              }}>Подписаться</button>}
                             </div>
                         </div>
                         <div className={s.infoBlock}>
@@ -46,12 +55,13 @@ const Users: React.FC<PropsType> = ({currentPage, pageSize, totalUsersCount, use
                     </div>)}
                 </div>
                 <div className={s.searchMenu}>
-                    Search menu
+                    <div>
+                        <UsersSearchForm onFilterChanged={props.onFilterChanged}/>
+                    </div>
                 </div>
             </div>
         </div>
     )
 }
-
 
 export default Users

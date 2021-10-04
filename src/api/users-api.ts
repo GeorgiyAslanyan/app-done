@@ -3,14 +3,14 @@ import {profileAPI} from "./profile-api";
 import {APIResponseType} from './api'
 
 export const UsersAPI = {
-    getUsers(currentPage: number = 1, pageSize: number = 10) {
-        return instance.get<GetUsersResponseType>(`users?page=${currentPage}&count=${pageSize}`)
+    getUsers(currentPage: number = 1, pageSize: number = 10, term: string = '') {
+        return instance.get<GetUsersResponseType>(`users?page=${currentPage}&count=${pageSize}&term=${term}`)
             .then(response => {
                 return response.data
             })
     },
-    getFollowedUsers(currentPage: number = 1, pageSize: number = 10, friend: boolean = true) {
-        return instance.get<GetUsersResponseType>(`users?friend=${friend}&page=${currentPage}&count=${pageSize}`)
+    getFollowedUsers(currentPage: number = 1, pageSize: number = 10, friend: boolean = true, term: string = '') {
+        return instance.get<GetUsersResponseType>(`users?friend=${friend}&page=${currentPage}&count=${pageSize}&term=${term}`)
             .then(response => {
                 return response.data
             })
