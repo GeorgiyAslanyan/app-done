@@ -1,25 +1,49 @@
-import React from "react";
+import React, {useEffect} from "react";
 import s from "./Users.module.css";
 import ava from "../../assets/images/avatar.png";
 import {NavLink} from "react-router-dom";
 import Paginator from "../common/paginator/Paginator";
-import {UsersType} from "../../types/types";
 import UsersSearchForm from "./UsersSearchForm";
-import {FilterType} from "../../redux/users-reducer";
+import {FilterType, requestUsers, follow, unfollow} from "../../redux/users-reducer";
+import {useDispatch, useSelector} from "react-redux";
+import {
+    getCurrentPage,
+    getFollowingInProgress,
+    getPageSize,
+    getTotalUsersCount,
+    getUsers,
+    getUsersFilter
+} from "../../redux/users-selector";
 
-type PropsType = {
-    currentPage: number,
-    pageSize: number,
-    totalUsersCount: number,
-    users: Array<UsersType>,
-    onPageChanged: (pageNumber: number) => void,
-    onFilterChanged: (filter: FilterType) => void,
-    followingInProgress: Array<number>,
-    unfollow: (id: number) => void,
-    follow: (id: number) => void,
-}
+type PropsType = {}
 
-const Users: React.FC<PropsType> = ({currentPage, pageSize, totalUsersCount, users, onPageChanged, ...props}) => {
+const Users: React.FC<PropsType> = ({...props}) => {
+    const users = useSelector(getUsers)
+    const totalUsersCount = useSelector(getTotalUsersCount)
+    const currentPage = useSelector(getCurrentPage)
+    const pageSize = useSelector(getPageSize)
+    const filter = useSelector(getUsersFilter)
+    const followingInProgress = useSelector(getFollowingInProgress)
+
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        dispatch(requestUsers(currentPage, pageSize, ''))
+    }, [])
+
+    const onPageChanged = (pageNumber: number) => {
+        dispatch(requestUsers(pageNumber, pageSize, filter.term))
+    }
+    const onFilterChanged = (filter: FilterType) => {
+        dispatch(requestUsers(1, pageSize, filter.term))
+    }
+    const Unfollow = (id: number) => {
+        dispatch(unfollow(id))
+    }
+    const Follow = (id: number) => {
+        dispatch(follow(id))
+    }
+
     return (
         <div>
             <Paginator totalItemsCount={totalUsersCount} pageSize={pageSize}
@@ -37,13 +61,13 @@ const Users: React.FC<PropsType> = ({currentPage, pageSize, totalUsersCount, use
                             </NavLink>
                             <div>
                                 {u.followed
-                                    ? <button disabled={props.followingInProgress.some(id => id === u.id)}
+                                    ? <button disabled={followingInProgress.some(id => id === u.id)}
                                               onClick={() => {
-                                                  props.unfollow(u.id)
+                                                  Unfollow(u.id)
                                               }}>Отписаться</button>
-                                    : <button disabled={props.followingInProgress.some(id => id === u.id)}
+                                    : <button disabled={followingInProgress.some(id => id === u.id)}
                                               onClick={() => {
-                                                  props.follow(u.id)
+                                                  Follow(u.id)
                                               }}>Подписаться</button>}
                             </div>
                         </div>
@@ -56,7 +80,7 @@ const Users: React.FC<PropsType> = ({currentPage, pageSize, totalUsersCount, use
                 </div>
                 <div className={s.searchMenu}>
                     <div>
-                        <UsersSearchForm onFilterChanged={props.onFilterChanged}/>
+                        <UsersSearchForm onFilterChanged={onFilterChanged}/>
                     </div>
                 </div>
             </div>

@@ -2,10 +2,10 @@ import s from './App.module.css';
 import React from 'react'
 import Nav from "./components/nav/Nav";
 import {Route, withRouter} from "react-router-dom";
-import UsersContainer from "./components/Users/UsersContainer";
+import UsersPage from "./components/Users/UsersContainer";
 import FollowedUsersContainer from "./components/FollowedUsers/FollowedUsersContainer";
 import HeaderContainer from "./components/header/HeaderContainer";
-import Login from "./components/Login/Login";
+import {LoginPage} from "./components/Login/LoginPage";
 import {connect} from "react-redux";
 import {initializeApp} from "./redux/app-reducer";
 import Preloader from "./components/common/preloader/preloader";
@@ -49,8 +49,8 @@ class App extends React.Component<PropsType> {
                     <div className={s.contentSide}>
                         <Route path='/profile/:userId?' render={() => <SuspendedProfile/>}/>
                         <Route path='/dialogs' render={() => <SuspendedDialogs/>}/>
-                        <Route path='/users' render={() => <UsersContainer pageTitle={'Title'}/>}/>
-                        <Route path='/login' render={() => <Login/>}/>
+                        <Route path='/users' render={() => <UsersPage />}/>
+                        <Route path='/login' render={() => <LoginPage/>}/>
                         <Route path='/followed' render={() => <FollowedUsersContainer  pageTitle={'Title'}/>}/>
                     </div>
                 </div>
