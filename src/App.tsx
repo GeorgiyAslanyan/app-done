@@ -51,7 +51,7 @@ class App extends React.Component<PropsType> {
                         <Route path='/dialogs' render={() => <SuspendedDialogs/>}/>
                         <Route path='/users' render={() => <UsersPage />}/>
                         <Route path='/login' render={() => <LoginPage/>}/>
-                        <Route path='/followed' render={() => <FollowedUsersContainer  pageTitle={'Title'}/>}/>
+                        <Route path='/followed' render={() => <FollowedUsersContainer/>}/>
                     </div>
                 </div>
             </div>

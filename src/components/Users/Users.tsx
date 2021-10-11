@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
 import s from "./Users.module.css";
 import ava from "../../assets/images/avatar.png";
-import {NavLink} from "react-router-dom";
+import {NavLink, useHistory} from "react-router-dom";
 import Paginator from "../common/paginator/Paginator";
 import UsersSearchForm from "./UsersSearchForm";
 import {FilterType, requestUsers, follow, unfollow} from "../../redux/users-reducer";
@@ -14,8 +14,11 @@ import {
     getUsers,
     getUsersFilter
 } from "../../redux/users-selector";
+import * as queryString from 'querystring'
 
 type PropsType = {}
+
+type QueryParamsType = { term?: string, page?: string };
 
 const Users: React.FC<PropsType> = ({...props}) => {
     const users = useSelector(getUsers)
@@ -26,10 +29,31 @@ const Users: React.FC<PropsType> = ({...props}) => {
     const followingInProgress = useSelector(getFollowingInProgress)
 
     const dispatch = useDispatch()
+    const history = useHistory()
 
     useEffect(() => {
-        dispatch(requestUsers(currentPage, pageSize, ''))
+        const parsed = queryString.parse(history.location.search.substr(1 )) as QueryParamsType
+
+        let actualPage = currentPage
+        let actualFilter = filter
+
+        if(!!parsed.page) actualPage = Number(parsed.page)
+
+        if(!!parsed.term) actualFilter = {...actualFilter, term: parsed.term as string}
+
+        dispatch(requestUsers(actualPage, pageSize, actualFilter.term))
     }, [])
+
+    useEffect(() => {
+        const query: QueryParamsType = {}
+        if (!!filter.term) query.term = filter.term
+        if (currentPage !== 1 ) query.page = String(currentPage)
+
+        history.push({
+            pathname: '/users',
+            search: queryString.stringify(query)
+        })
+    }, [filter, currentPage])
 
     const onPageChanged = (pageNumber: number) => {
         dispatch(requestUsers(pageNumber, pageSize, filter.term))
